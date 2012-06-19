@@ -8,6 +8,13 @@ class Usage(Exception):
     def __init__(self, msg):
         self.msg = msg
 
+def processTable(tableName, pofilepath):
+    jsonObject = {};
+    po = polib.pofile(pofilepath)
+    for entry in po.translated_entries():
+        jsonObject[entry.msgid] = entry.msgstr
+
+    return 'window.localizations["' + tableName + '"] = ' + json.dumps(jsonObject, sort_keys=True) + ';\n'
 
 def main(argv=None):
     if argv is None:
@@ -39,13 +46,21 @@ def main(argv=None):
 
     output_filename = os.path.expandvars(os.path.expanduser(output_filename))
 
-    jsonObject = {};
-    po = polib.pofile(pofilepath)
-    for entry in po.translated_entries():
-        jsonObject[entry.msgid] = entry.msgstr
-
     jsonString = 'if(!window.localizations) { window.localizations={}; }\n'
-    jsonString += 'window.localizations["' + locale + '"] = ' + json.dumps(jsonObject, sort_keys=True) + ';'
+    jsonString += processTable(locale, pofilepath)
+
+    file = None
+    table = None
+    for arg in args[1:]:
+        if arg is None:
+            break
+
+        if file is None:
+            file = os.path.expandvars(os.path.expanduser(arg))
+        else:
+            print 'Appending table %s from %s.' % (arg, file)
+            jsonString += processTable(locale + "-" + arg, file)
+            file = None
 
     file = open(output_filename, "w")
     text = file.write(jsonString)
