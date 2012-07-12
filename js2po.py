@@ -47,9 +47,9 @@ def main(argv=None):
 
         for string in sorted(tables[k].iterkeys()):
             po.append(polib.POEntry(
-                msgid=string,
+                msgid=string.decode("utf-8"),
                 #msgstr=string,
-                comment='\n'.join(tables[k][string]['comments']),
+                comment=('\n'.join(tables[k][string]['comments'])).decode("utf-8"),
                 occurrences=tables[k][string]['occurrences']
             ))
 
