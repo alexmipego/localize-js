@@ -53,7 +53,7 @@ class jsParser:
         string = string.decode("string-escape")
 
         if table is None or len(table) <= 0:
-            table = '__main'
+            table = 'Default'
 
         for table in self.tablesForData(string, comment, table):
             if not table in self.tables:
