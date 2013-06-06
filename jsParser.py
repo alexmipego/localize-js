@@ -13,7 +13,7 @@ class jsParser:
     def __init__(self):
         self.matcher = re.compile("Localize(?:\s*)\((?:" + self.jsStringRe + ")(?:" + self.jsStringRe + ")?(?:" + self.jsStringRe + ")?\)", re.VERBOSE)
 
-    def startFileProcessing(self, path, filename, file):
+    def startFileProcessing(self, contents):
         pass
 
     def tablesForData(self, string, comment, table):
@@ -21,9 +21,10 @@ class jsParser:
 
     def processFile(self, path, filename):
         file = open(path, "r")
-        self.startFileProcessing(path, filename, file)
         text = file.read()
         file.close()
+
+        self.startFileProcessing(text)
 
         found = 0
 

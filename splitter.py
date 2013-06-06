@@ -4,13 +4,22 @@ import sys
 
 
 class splitterParser(jsParser):
+    defaultSplitMatcher = re.compile('^// DefaultTable \[([a-zA-Z]*)]')
     splitMatcher = re.compile('^\[([a-zA-Z]*)]')
+    defaultTables = ['d']
 
     def __init__(self):
         jsParser.__init__(self)
 
-    def startFileProcessing(self, path, filename, file):
-        pass
+    def startFileProcessing(self, contents):
+        matches = self.defaultSplitMatcher.search(contents)
+
+        if matches is None:
+            self.defaultTables = ['d']
+        else:
+            self.defaultTables = []
+            for t in m.group(1):
+                self.defaultTables.append(t)
 
     def tablesForData(self, string, comment, table):
         tables = []
@@ -25,7 +34,8 @@ class splitterParser(jsParser):
             for split in m.group(1):
                 tables.append(table + '.' + split)
         else:
-            tables.append(table + '.d')
+            for t in self.defaultTables:
+                tables.append(table + '.' + t)
 
         return tables
 
