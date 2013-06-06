@@ -18,7 +18,7 @@ class splitterParser(jsParser):
             self.defaultTables = ['d']
         else:
             self.defaultTables = []
-            for t in m.group(1):
+            for t in matches.group(1):
                 self.defaultTables.append(t)
 
     def tablesForData(self, string, comment, table):
