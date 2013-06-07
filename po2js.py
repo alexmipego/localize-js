@@ -22,7 +22,7 @@ def main(argv=None):
 
     try:
         try:
-            opts, args = getopt.getopt(argv[1:], "ho:l:", ["help", "output=", "locale="])
+            opts, args = getopt.getopt(argv[1:], "ho:l:f:", ["help", "output=", "locale=", "fallback="])
         except getopt.error, msg:
             raise Usage(msg)
             # more code, unchanged
@@ -37,6 +37,9 @@ def main(argv=None):
             output_filename = arg
         elif opt in ('-l', '--locale'):
             locale = arg
+        elif opt in ('-f', '--fallback'):
+            print "f is %s" % arg
+            fallback = arg
 
     if locale is None:
         raise Usage('Locale is required.')
