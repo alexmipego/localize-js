@@ -12,7 +12,7 @@ class Usage(Exception):
 def appendToMap(projMap, proj, entry):
 	if not proj in projMap:
 		projMap[proj] = {}
-
+		
 	if not entry.msgid in projMap[proj]:
 		projMap[proj][entry.msgid] = entry
 
@@ -33,21 +33,21 @@ def main(argv=None):
 
 	pofile = os.path.expandvars(os.path.expanduser(args[0]))
 	outdir = os.path.expandvars(os.path.expanduser(args[1]))
-
+	
 	defaultProj = args[2]
 	projs = {}
 	projMap = { }
 	lastProj = None
-
+	
 	for arg in args[3:]:
 		if lastProj is None:
 			lastProj = arg
 		else:
 			projs[lastProj] = arg
 			lastProj = None
-
+	
 	po = polib.pofile(pofile)
-
+	
 	for entry in po:
 		newOccList = []
 		for (loc, line) in entry.occurrences:
@@ -59,20 +59,20 @@ def main(argv=None):
 					appendToMap(projMap, projs[proj], entry)
 					done = True
 					break
-
+			
 			if not done:
 				appendToMap(projMap, defaultProj, entry)
 				newOccList.append((loc, ''))
-
+				
 		entry.occurrences = newOccList
-
+					
 	outtpl = os.path.join(outdir, os.path.splitext(os.path.basename(pofile))[0])
-
+	
 	for (proj, entryMap) in projMap.items():
 		newPo = polib.POFile()
 		newPo.extend(entryMap.values())
-
-		newPo.save(outtpl + '.' + proj + '.pot')
+		
+		newPo.save(outtpl + '.' + proj + '.pot')	
 
 
 if __name__ == "__main__":

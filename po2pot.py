@@ -23,19 +23,19 @@ def main(argv=None):
 		print >> sys.stderr, err.msg
 		print >> sys.stderr, "for help use --help"
 		return 2
-
+		
 	po = polib.pofile(os.path.expandvars(os.path.expanduser(args[0])))
 	pot = polib.POFile()
-
+	
 	for entry in po:
 		if len(entry.msgstr) > 0:
 			entry.msgid = entry.msgstr
 			entry.msgstr = ''
-
+		
 		pot.append(entry)
-
+		
 	pot.save(os.path.expandvars(os.path.expanduser(args[1])))
-
+	
 
 if __name__ == "__main__":
 	sys.exit(main())

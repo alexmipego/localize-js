@@ -48,7 +48,7 @@ def main(argv=None):
 			reverseIgnoresMode = True
 		elif opt in ('-j', '--javaMode'):
 			javaMode = True
-
+			
 	# Start
 	dirs = []
 	for proj in projects:
@@ -66,14 +66,14 @@ def main(argv=None):
 				merges[base].append(full)
 			else:
 				merges[base] = [full]
-
+	
 	for m in merges:
 		mergedPo = polib.POFile()
 		for f in merges[m]:
 			for entry in polib.pofile(f).translated_entries():
 				if len(entry.msgstr)  <= 0:
 					continue
-
+				
 				if not javaMode and not entry.msgid in [e.msgid for e in mergedPo]:
 					mergedPo.append(entry)
 					continue
@@ -81,12 +81,12 @@ def main(argv=None):
 					for occurrence, _ignore in entry.occurrences:
 						if not occurrence in [o[0][0] for o in [e.occurrences for e in mergedPo]]:
 							clone = polib.POEntry(
-								msgid=entry.msgid,
-								msgstr=entry.msgstr,
+								msgid=entry.msgid, 
+								msgstr=entry.msgstr, 
 								occurrences=[(occurrence, '')])
 
 							mergedPo.append(clone)
-
+					
 		mergedPo.save(os.path.join(outputDir, m + '.po'))
 
 
