@@ -41,12 +41,14 @@ class jsParser:
         string = match[0]
         comment = match[2]
         table = match[4]
-        if not string is None and len(string) <= 0:
+        
+        if string is None or len(string) <= 0:
             string = match[1]
-        if not comment is None and len(comment) <= 0:
+        if comment is None or len(comment) <= 0:
             comment = match[3]
-        if not table is None and len(table) <= 0:
+        if table is None or len(table) <= 0:
             table = match[5]
+
 
         if string is None or len(string) == 0:
             return
