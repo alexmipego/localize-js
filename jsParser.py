@@ -39,15 +39,18 @@ class jsParser:
 
     def processMatch(self, match, filename, position):
         string = match[0]
-        comment = match[2]
-        table = match[4]
+        comment = match[2] if len(match) > 2 else None
+        table = match[4] if len(match) > 4 else None
         
         if string is None or len(string) <= 0:
             string = match[1]
-        if comment is None or len(comment) <= 0:
-            comment = match[3]
-        if table is None or len(table) <= 0:
-            table = match[5]
+
+        if len(match) > 2:
+            if comment is None or len(comment) <= 0:
+                comment = match[3]
+            if len(match) > 4:
+                if table is None or len(table) <= 0:
+                    table = match[5]
 
 
         if string is None or len(string) == 0:
