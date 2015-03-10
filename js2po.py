@@ -17,7 +17,7 @@ def main(argv=None, parser=jsParser()):
 
     try:
         try:
-            opts, args = getopt.getopt(argv[1:], "ho:", ["help", "output="])
+            opts, args = getopt.getopt(argv[1:], "ho:x:", ["help", "output="])
         except getopt.error, msg:
             raise Usage(msg)
             # more code, unchanged
@@ -27,9 +27,12 @@ def main(argv=None, parser=jsParser()):
         return 2
 
     output_dir = None
+    exclude = None
     for opt, arg in opts:
         if opt in ('-o', '--output'):
             output_dir = arg
+        if opt in ('-x', '--exclude'):
+            exclude = arg.split(',')
 
     if output_dir is None:
         raise Usage('Output directory is required.')

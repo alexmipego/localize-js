@@ -27,7 +27,7 @@ def main(argv=None, parser=jsParser()):
         return 2
 
     parser.doubleChecker = re.compile("{{do-localize\s*")
-    parser.matcher = re.compile("{{do-localize(?:\s*)(?:" + parser.jsStringRe + ")?(?:.*)}}", re.VERBOSE)
+    parser.matcher = re.compile("{{do-localize(?:\s*)(?:" + parser.jsStringRe + ")?(?:[^{]*)}}", re.VERBOSE)
 
     output_dir = None
     for opt, arg in opts:
